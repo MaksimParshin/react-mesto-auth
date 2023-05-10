@@ -38,7 +38,7 @@ export default function Register() {
           Зарегистрироваться
         </button>
       </form>
-      <p className="sign__question">Уже зарегистрированы? <NavLink className="sign__question-link">Войти</NavLink></p>
+      <p className="sign__question">Уже зарегистрированы? <NavLink to="/sign-in" className="sign__question-link">Войти</NavLink></p>
     </div>
   </div>
   )

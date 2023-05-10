@@ -11,10 +11,12 @@ import AddPlacePopup from "./AddPlacePopup";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
+import ProtectedRouteElement from "./ProtectedRoute";
 
 function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [loggedIn, setLoggedIn] = React.useState(false);
+
   React.useEffect(() => {
     API.getUserInfo()
       .then((data) => {
@@ -153,8 +155,8 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <Header />
-        <Register/>
-        
+        {/* <Register/> */}
+
         <Routes>
           <Route
             path="/"
@@ -166,9 +168,10 @@ function App() {
               )
             }
           />
+          <Route path="/main" element={<ProtectedRouteElement element={Main} loggedIn={loggedIn}/>}/>
           <Route
             path="/main"
-            element={
+            element={ 
               <Main
                 cards={cards}
                 onEditAvatar={handleEditAvatarClick}
@@ -180,10 +183,11 @@ function App() {
               />
             }
           />
-          <Route path="/sign-in" element={<Login/>}/>
+          <Route path="/sign-up" element={<Register />} />
+          <Route path="/sign-in" element={<Login />} />
         </Routes>
 
-       {loggedIn && <Footer />} 
+        {loggedIn && <Footer />}
 
         <EditAvatarPopup
           isOpend={isEditAvatarPopupOpen}
