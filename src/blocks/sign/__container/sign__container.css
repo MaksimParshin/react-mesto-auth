@@ -1,0 +1,9 @@
+.sign__container {
+  width: 358px;
+  min-height: 330px;
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+}

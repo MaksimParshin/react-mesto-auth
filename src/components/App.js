@@ -8,10 +8,13 @@ import { API } from "../utils/Api";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
+import { Routes, Route, Navigate } from "react-router-dom";
+import Login from "./Login";
+import Register from "./Register";
 
 function App() {
   const [currentUser, setCurrentUser] = React.useState({});
-
+  const [loggedIn, setLoggedIn] = React.useState(false);
   React.useEffect(() => {
     API.getUserInfo()
       .then((data) => {
@@ -30,7 +33,7 @@ function App() {
     elem: {},
   });
   const [isLoading, setIsLoading] = React.useState(false);
-console.log(selectedCard)
+  // console.log(selectedCard)
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
   }
@@ -150,17 +153,37 @@ console.log(selectedCard)
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <Header />
-        <Main
-          cards={cards}
-          onEditAvatar={handleEditAvatarClick}
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          onCardClick={handleCardClick}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
-        />
+        <Register/>
+        
+        <Routes>
+          <Route
+            path="/"
+            element={
+              loggedIn ? (
+                <Navigate to="/main" replace />
+              ) : (
+                <Navigate to="/sign-in" replace />
+              )
+            }
+          />
+          <Route
+            path="/main"
+            element={
+              <Main
+                cards={cards}
+                onEditAvatar={handleEditAvatarClick}
+                onEditProfile={handleEditProfileClick}
+                onAddPlace={handleAddPlaceClick}
+                onCardClick={handleCardClick}
+                onCardLike={handleCardLike}
+                onCardDelete={handleCardDelete}
+              />
+            }
+          />
+          <Route path="/sign-in" element={<Login/>}/>
+        </Routes>
 
-        <Footer />
+       {loggedIn && <Footer />} 
 
         <EditAvatarPopup
           isOpend={isEditAvatarPopupOpen}
@@ -185,7 +208,11 @@ console.log(selectedCard)
           handleCloseOverlay={handleCloseOverlay}
         />
 
-        <ImagePopup card={selectedCard} onClose={closeAllPopups} handleCloseOverlay={handleCloseOverlay}/>
+        <ImagePopup
+          card={selectedCard}
+          onClose={closeAllPopups}
+          handleCloseOverlay={handleCloseOverlay}
+        />
       </div>
     </CurrentUserContext.Provider>
   );

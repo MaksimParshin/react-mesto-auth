@@ -61,3 +61,14 @@
 @import url(./blocks/popup/__container/_name/popup__container_name_card-delet.css);
 @import url(./blocks/popup/__submit-button/_name_card-delet/popup__submit-button_name_card-delet.css);
 @import url(./blocks/popup/__title/_name_card-delet/popup__title_name_card-delet.css);
+
+/* login */
+@import url(./blocks/sign/sign.css);
+@import url(./blocks/sign/__container/sign__container.css);
+@import url(./blocks/sign/__title/sign__title.css);
+@import url(./blocks/sign/__input/sign__input.css);
+@import url(./blocks/sign/__submit-button/sign__submit-button.css);
+@import url(./blocks/sign/__error/sign_error.css);
+@import url(./blocks/sign/__error/_visible/sign__error_visible.css);
+@import url(./blocks/sign/__question/sign__question.css);
+@import url(./blocks/sign/__question-link/sign__question-link.css);
