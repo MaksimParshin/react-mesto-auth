@@ -1,0 +1,17 @@
+.element__recicle-bin {
+  display: none;
+  width: 18px;
+  height: 19px;
+  background: url(../../../images/bin.svg);
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  border: none;
+  cursor: pointer;
+  transition: .5s linear;
+}
+
+.element__recicle-bin:hover {
+opacity: 0.6;
+}

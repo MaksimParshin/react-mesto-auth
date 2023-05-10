@@ -1,0 +1,17 @@
+.elements {
+  max-width: 880px;
+  margin: 0 auto;
+
+}
+
+@media (max-width: 918px) {
+  .elements {
+    width: calc(100% - 38px);
+  }
+}
+
+@media (max-width: 600px) {
+  .elements {
+    gap: 20px;
+  }
+}

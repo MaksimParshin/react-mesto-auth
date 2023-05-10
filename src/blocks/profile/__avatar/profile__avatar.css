@@ -1,0 +1,22 @@
+.profile__avatar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    background-image: url(../../../images/pen.svg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 26px 26px;
+    background-color: rgba(0, 0, 0, .8);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity .3s linear;
+}
+
+
+.profile__avatar:hover {
+    opacity: 1;
+}

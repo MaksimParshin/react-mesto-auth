@@ -1,0 +1,11 @@
+.header__logo {
+  width: 142px;
+  object-fit: cover;
+  transition: .5s linear;
+}
+
+@media (max-width: 600px) {
+  .header__logo {
+    width: 104px;
+  }
+}

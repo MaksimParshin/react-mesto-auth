@@ -1,0 +1,7 @@
+.elements__list {
+  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 282px);
+  row-gap: 20px;
+  column-gap: 17px;
+}

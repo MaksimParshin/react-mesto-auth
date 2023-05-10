@@ -1,0 +1,7 @@
+.element__container {
+  width: calc(100% - 40px);
+  margin: 25px auto 25px auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
