@@ -5,7 +5,7 @@ export default function Register() {
   return (
     <div className="sign">
     <div className="sign__container">
-      <h2 className="sign__title">Вход</h2>
+      <h2 className="sign__title">Регистрация</h2>
       <form className="sign__form" method="post" name="login__form">
         <label className="sign__label">
           <input
@@ -35,7 +35,7 @@ export default function Register() {
           className="sign__submit-button"
           aria-label="войти"
         >
-          Войти
+          Зарегистрироваться
         </button>
       </form>
       <p className="sign__question">Уже зарегистрированы? <NavLink className="sign__question-link">Войти</NavLink></p>
