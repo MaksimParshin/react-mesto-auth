@@ -222,6 +222,8 @@ function App() {
               )
             }
           />
+
+
           <Route
             path="/main"
             element={
@@ -238,6 +240,7 @@ function App() {
               />
             }
           />
+          <Route path='/main' element={ <Footer />}/>
   
           <Route
             path="/sign-up"
@@ -248,9 +251,9 @@ function App() {
             element={<Login handleLogin={handleLogin} />}
           />
 
-          <Route path="/main" element={<Footer />} />
+         
         </Routes>
-
+       
         <EditAvatarPopup
           isOpend={isEditAvatarPopupOpen}
           onClose={closeAllPopups}

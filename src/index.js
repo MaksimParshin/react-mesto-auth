@@ -7,8 +7,8 @@ import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <BrowserRouter basename="mesto-react">
+  <React.StrictMode basename="mesto-react">
+    <BrowserRouter >
       <App />
     </BrowserRouter>
   </React.StrictMode>
@@ -17,3 +17,4 @@ root.render(
 reportWebVitals();
 
 // https://i.imgur.com/XWOuu8G.gif
+// basename="mesto-react"
