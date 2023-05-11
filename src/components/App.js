@@ -23,24 +23,6 @@ function App() {
 
   const navigate = useNavigate();
 
-  // выход
-  function handleSignOut() {
-    localStorage.removeItem("jwt");
-    navigate("/sign-in", { replace: true });
-  }
-
-
-  // регистрация
-  function handleRegister(password, email) {
-    auth.register(password, email).then((res) => {
-      navigate("/sign-in", { replace: true });
-    });
-  }
-// вход
-  const handleLogin = () => {
-    setLoggedIn(true);
-  };
-
   React.useEffect(() => {
     API.getUserInfo()
       .then((data) => {
@@ -59,10 +41,34 @@ function App() {
     elem: {},
   });
 
-  const [isInfoToolTipPopupOpen, setIsInfoToolTipPopupOpen] = React.useState();
+  const [isInfoToolTipPopupOpen, setIsInfoToolTipPopupOpen] =
+    React.useState(false);
+
+  // выход
+  function handleSignOut() {
+    localStorage.removeItem("jwt");
+    navigate("/sign-in", { replace: true });
+  }
+
+  // регистрация
+  function handleRegister(password, email) {
+    auth
+      .register(password, email)
+      .then((res) => {
+        setIsInfoToolTipPopupOpen(true);
+        if (isInfoToolTipPopupOpen !== true) {
+          navigate("/sign-in", { replace: true });
+        }
+      })
+      .catch((err) => console.log(err));
+  }
+  // вход
+  const handleLogin = () => {
+    setLoggedIn(true);
+  };
 
   const [isLoading, setIsLoading] = React.useState(false);
-  // console.log(selectedCard)
+
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
   }
@@ -79,6 +85,7 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
+    setIsInfoToolTipPopupOpen(false);
     setSelectedCard({ isOpen: false, elem: {} });
   }
 
@@ -246,7 +253,10 @@ function App() {
               />
             }
           /> */}
-          <Route path="/sign-up" element={<Register onHandleRegister={handleRegister}/>} />
+          <Route
+            path="/sign-up"
+            element={<Register onHandleRegister={handleRegister} />}
+          />
           <Route
             path="/sign-in"
             element={<Login handleLogin={handleLogin} />}
@@ -286,11 +296,11 @@ function App() {
         <InfoTooltip
           name="info-tool-tip"
           title={
-            loggedIn
+            isInfoToolTipPopupOpen
               ? "Вы успешно зарегистрировались!"
               : "Что-то пошло не так! Попробуйте ещё раз."
           }
-          isOpend={false}
+          isOpend={isInfoToolTipPopupOpen}
           onClose={closeAllPopups}
           handleCloseOverlay={handleCloseOverlay}
         />

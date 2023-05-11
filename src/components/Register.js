@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import * as auth from "../utils/auth";
+import { NavLink } from "react-router-dom";
 
-export default function Register({onHandleRegister}) {
+export default function Register({ onHandleRegister }) {
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
   });
-
 
   function handleChange(evt) {
     const { name, value } = evt.target;

@@ -1,5 +1,6 @@
 import React from 'react'
 import rec1 from '../images/rec1.svg'
+import rec2 from '../images/rec2.svg'
 
 export default function InfoTooltip({ name, title, isOpend, onClose, handleCloseOverlay }) {
   return (
@@ -11,7 +12,7 @@ export default function InfoTooltip({ name, title, isOpend, onClose, handleClose
           aria-label="закрыть попап"
           onClick={onClose}
         ></button>
-        <img className="popup__img-tooltip" src={rec1} alt="крестик"/>
+        <img className="popup__img-tooltip" src={isOpend ? rec1 : rec2} alt="крестик"/>
         <h2 className="popup__title-tooltip">{title}</h2>
        
       </div>
