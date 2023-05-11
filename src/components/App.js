@@ -8,14 +8,29 @@ import { API } from "../utils/Api";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
 import ProtectedRouteElement from "./ProtectedRoute";
+import InfoTooltip from "./InfoTooltip";
+import * as auth from "../utils/auth";
 
 function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [loggedIn, setLoggedIn] = React.useState(false);
+
+  const [userEmail, setUserEmail] = React.useState({});
+
+  const navigate = useNavigate();
+
+  function handleSignOut() {
+    localStorage.removeItem("jwt");
+    navigate("/sign-in", { replace: true });
+  }
+
+  const handleLogin = () => {
+    setLoggedIn(true);
+  };
 
   React.useEffect(() => {
     API.getUserInfo()
@@ -34,6 +49,9 @@ function App() {
     isOpen: false,
     elem: {},
   });
+
+  const [isInfoToolTipPopupOpen, setIsInfoToolTipPopupOpen] = React.useState();
+
   const [isLoading, setIsLoading] = React.useState(false);
   // console.log(selectedCard)
   function handleEditAvatarClick() {
@@ -90,6 +108,27 @@ function App() {
       })
       .catch((err) => console.log(err));
   }, []);
+
+  React.useEffect(() => {
+    handleTokenCheck();
+  }, []);
+
+  function handleTokenCheck() {
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      auth.getUserMe(jwt).then((res) => {
+        if (res) {
+          const userData = {
+            email: res.data.email,
+          };
+
+          setLoggedIn(true);
+          setUserEmail(userData);
+          navigate("/main", { replace: true });
+        }
+      });
+    }
+  }
 
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
@@ -154,7 +193,7 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header />
+        <Header userEmail={userEmail} signOut={handleSignOut} />
         {/* <Register/> */}
 
         <Routes>
@@ -168,8 +207,23 @@ function App() {
               )
             }
           />
-          <Route path="/main" element={<ProtectedRouteElement element={Main} loggedIn={loggedIn}/>}/>
           <Route
+            path="/main"
+            element={
+              <ProtectedRouteElement
+                element={Main}
+                cards={cards}
+                onEditAvatar={handleEditAvatarClick}
+                onEditProfile={handleEditProfileClick}
+                onAddPlace={handleAddPlaceClick}
+                onCardClick={handleCardClick}
+                onCardLike={handleCardLike}
+                onCardDelete={handleCardDelete}
+                loggedIn={loggedIn}
+              />
+            }
+          />
+          {/* <Route
             path="/main"
             element={ 
               <Main
@@ -182,12 +236,15 @@ function App() {
                 onCardDelete={handleCardDelete}
               />
             }
-          />
+          /> */}
           <Route path="/sign-up" element={<Register />} />
-          <Route path="/sign-in" element={<Login />} />
-        </Routes>
+          <Route
+            path="/sign-in"
+            element={<Login handleLogin={handleLogin} />}
+          />
 
-        {loggedIn && <Footer />}
+          <Route path="/main" element={<Footer />} />
+        </Routes>
 
         <EditAvatarPopup
           isOpend={isEditAvatarPopupOpen}
@@ -214,6 +271,17 @@ function App() {
 
         <ImagePopup
           card={selectedCard}
+          onClose={closeAllPopups}
+          handleCloseOverlay={handleCloseOverlay}
+        />
+        <InfoTooltip
+          name="info-tool-tip"
+          title={
+            loggedIn
+              ? "Вы успешно зарегистрировались!"
+              : "Что-то пошло не так! Попробуйте ещё раз."
+          }
+          isOpend={false}
           onClose={closeAllPopups}
           handleCloseOverlay={handleCloseOverlay}
         />

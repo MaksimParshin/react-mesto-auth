@@ -1,0 +1,11 @@
+.header__button-exit {
+  padding: 0;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: right;
+  color: #a9a9a9;
+  background-color: #000000;
+  border: none;
+  cursor: pointer;
+}
