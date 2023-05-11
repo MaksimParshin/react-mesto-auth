@@ -210,7 +210,6 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <Header userEmail={userEmail} signOut={handleSignOut} loggedIn={loggedIn}/>
-        {/* <Register/> */}
 
         <Routes>
           <Route
@@ -239,20 +238,7 @@ function App() {
               />
             }
           />
-          {/* <Route
-            path="/main"
-            element={ 
-              <Main
-                cards={cards}
-                onEditAvatar={handleEditAvatarClick}
-                onEditProfile={handleEditProfileClick}
-                onAddPlace={handleAddPlaceClick}
-                onCardClick={handleCardClick}
-                onCardLike={handleCardLike}
-                onCardDelete={handleCardDelete}
-              />
-            }
-          /> */}
+  
           <Route
             path="/sign-up"
             element={<Register onHandleRegister={handleRegister} />}
