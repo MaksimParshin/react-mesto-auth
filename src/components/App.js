@@ -209,7 +209,7 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header userEmail={userEmail} signOut={handleSignOut} />
+        <Header userEmail={userEmail} signOut={handleSignOut} loggedIn={loggedIn}/>
         {/* <Register/> */}
 
         <Routes>
