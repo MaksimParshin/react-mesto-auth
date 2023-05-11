@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import * as auth from "../utils/auth";
 
-export default function Register() {
+export default function Register({onHandleRegister}) {
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
   });
 
-  const navigate = useNavigate();
 
   function handleChange(evt) {
     const { name, value } = evt.target;
@@ -20,9 +19,7 @@ export default function Register() {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    auth.register(formValue.password, formValue.email).then((res) => {
-      navigate("/sign-in", { replace: true });
-    });
+    onHandleRegister(formValue.password, formValue.email);
   }
 
   return (

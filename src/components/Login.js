@@ -34,6 +34,7 @@ export default function Login({ handleLogin }) {
           });
         }
         handleLogin();
+        
         navigate("/main", { replace: true });
       })
       .catch((err) => console.log(err));

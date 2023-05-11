@@ -23,11 +23,20 @@ function App() {
 
   const navigate = useNavigate();
 
+  // выход
   function handleSignOut() {
     localStorage.removeItem("jwt");
     navigate("/sign-in", { replace: true });
   }
 
+
+  // регистрация
+  function handleRegister(password, email) {
+    auth.register(password, email).then((res) => {
+      navigate("/sign-in", { replace: true });
+    });
+  }
+// вход
   const handleLogin = () => {
     setLoggedIn(true);
   };
@@ -237,7 +246,7 @@ function App() {
               />
             }
           /> */}
-          <Route path="/sign-up" element={<Register />} />
+          <Route path="/sign-up" element={<Register onHandleRegister={handleRegister}/>} />
           <Route
             path="/sign-in"
             element={<Login handleLogin={handleLogin} />}
