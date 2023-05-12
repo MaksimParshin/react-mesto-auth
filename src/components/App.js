@@ -35,7 +35,7 @@ function App() {
 
   const [isInfoToolTipPopupOpen, setIsInfoToolTipPopupOpen] =
     React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState();
+  const [isSuccses, setIsSuccses] = React.useState();
   const [valueRegister, setValueRegister] = React.useState({
     email: "",
     password: "",
@@ -163,22 +163,31 @@ function App() {
   }
 
   // регистрация
-  function handleRegister(password, email) {
-    auth
-      .register(password, email)
-      .then((response) => {
-        // console.log(response.status);
+  function handleRegister() {
+    
+      auth
+        .register(valueRegister.password, valueRegister.email)
+        .then((res) => {
+          // console.log(response.status);
 
-        setIsInfoToolTipPopupOpen(true);
-
-        navigate("/sign-in", { replace: true });
-        setValueRegister({});
-      })
-      .catch((err) => {
-        return err.then((res) => setErrorMessage(res));
-      });
+          setIsSuccses(true);
+          openToolTip()
+          navigate("/sign-in", { replace: true });
+          setValueRegister({});
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsSuccses(false);
+          openToolTip()
+          
+        });
+  
   }
-  console.log(errorMessage);
+
+  function openToolTip() {
+    setIsInfoToolTipPopupOpen(true);
+  }
+  // console.log(isSuccses);
   // вход
   const handleLogin = (bool) => {
     setLoggedIn(bool);
@@ -300,9 +309,9 @@ function App() {
         />
         <InfoTooltip
           name="info-tool-tip"
-          loggedIn={loggedIn}
+          isSuccses={isSuccses}
           title={
-            loggedIn
+            isSuccses
               ? "Вы успешно зарегистрировались!"
               : "Что-то пошло не так! Попробуйте ещё раз."
           }
