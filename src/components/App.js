@@ -17,27 +17,12 @@ import * as auth from "../utils/auth";
 
 function App() {
   const [currentUser, setCurrentUser] = React.useState({});
+  const [cards, setCards] = React.useState([]);
   const [loggedIn, setLoggedIn] = React.useState(false);
 
   const [userEmail, setUserEmail] = React.useState({});
 
   const navigate = useNavigate();
-
-
-function handleUserData(userEmail) {
-  setUserEmail({'email': userEmail})
-}
-
-  React.useEffect(() => {
-    if (loggedIn) {
-      API.getUserInfo()
-        .then((data) => {
-          setCurrentUser(data);
-        })
-        .catch((err) => console.log(err));
-    }
-  }, [loggedIn]);
-
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
     React.useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
@@ -51,30 +36,17 @@ function handleUserData(userEmail) {
   const [isInfoToolTipPopupOpen, setIsInfoToolTipPopupOpen] =
     React.useState(false);
 
-  // выход
-  function handleSignOut() {
-    localStorage.removeItem("jwt");
-    navigate("/sign-in", { replace: true });
-  }
+  React.useEffect(() => {
+    if (loggedIn) {
+      API.getUserInfo()
+        .then((data) => {
+          setCurrentUser(data);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [loggedIn]);
 
-  // регистрация
-  function handleRegister(password, email) {
-    auth
-      .register(password, email)
-      .then((response) => {
-        // console.log(response.status);
-
-        setIsInfoToolTipPopupOpen(true);
-        if (loggedIn) {
-          navigate("/sign-in", { replace: true });
-        }
-      })
-      .catch((err) => console.log(err));
-  }
-  // вход
-  const handleLogin = () => {
-    setLoggedIn(true);
-  };
+ 
 
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -124,39 +96,18 @@ function handleUserData(userEmail) {
       .finally(() => setIsLoading(false));
   }
 
-  const [cards, setCards] = React.useState([]);
-
   React.useEffect(() => {
     if (loggedIn) {
       API.getInitialCards()
-      .then((data) => {
-        setCards(data);
-      })
-      .catch((err) => console.log(err));
+        .then((data) => {
+          setCards(data);
+        })
+        .catch((err) => console.log(err));
     }
-    
   }, [loggedIn]);
 
-  React.useEffect(() => {
-    handleTokenCheck();
-  }, [loggedIn]);
 
-  function handleTokenCheck() {
-    const jwt = localStorage.getItem("jwt");
-    if (jwt) {
-      auth.getUserMe(jwt).then((res) => {
-        if (res) {
-          const userData = {
-            email: res.data.email,
-          };
 
-          setLoggedIn(true);
-          setUserEmail(userData);
-          navigate("/main", { replace: true });
-        }
-      });
-    }
-  }
 
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
@@ -205,6 +156,58 @@ function handleUserData(userEmail) {
     }
   }
 
+   // выход
+   function handleSignOut() {
+    localStorage.removeItem("jwt");
+    navigate("/sign-in", { replace: true });
+  }
+
+  // регистрация
+  function handleRegister(password, email) {
+    auth
+      .register(password, email)
+      .then((response) => {
+        // console.log(response.status);
+
+        setIsInfoToolTipPopupOpen(true);
+        if (loggedIn) {
+          navigate("/sign-in", { replace: true });
+        }
+      })
+      .catch((err) => console.log(err));
+  }
+  
+  // вход
+  const handleLogin = () => {
+    setLoggedIn(true);
+  };
+
+
+  React.useEffect(() => {
+    handleTokenCheck();
+  }, [loggedIn]);
+
+  function handleTokenCheck() {
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      auth.getUserMe(jwt).then((res) => {
+        if (res) {
+          const userData = {
+            email: res.data.email,
+          };
+
+          setLoggedIn(true);
+          setUserEmail(userData);
+          navigate("/main", { replace: true });
+        }
+      });
+    }
+  }
+
+  function handleUserData(userEmail) {
+    setUserEmail({ email: userEmail });
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -250,7 +253,12 @@ function handleUserData(userEmail) {
           />
           <Route
             path="/sign-in"
-            element={<Login handleLogin={handleLogin} handleUserData={handleUserData}/>}
+            element={
+              <Login
+                handleLogin={handleLogin}
+                handleUserData={handleUserData}
+              />
+            }
           />
         </Routes>
 
