@@ -11,7 +11,18 @@ export default function PopupWithForm({
   handleCloseOverlay
 
 }) {
+  function closeEsc(event) {
+    if (event.key === "Escape") {
+      onClose();
+    }
+  }
 
+  React.useEffect(() => {
+    document.addEventListener("keydown", closeEsc);
+    return () => {
+      document.removeEventListener("keydown", closeEsc);
+    };
+  }, [isOpend, onClose]);
 
   return (
     <div className={`popup popup_name_${name} ${isOpend ? "popup_opend" : ""}`} onClick={handleCloseOverlay}>
