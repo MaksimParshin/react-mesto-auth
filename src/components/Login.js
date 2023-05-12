@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as auth from "../utils/auth";
 
-export default function Login({ handleLogin, handleUserData }) {
+export default function Login({
+  handleLogin,
+  handleUserData,
+  openToolTip,
+  setIsSuccses,
+}) {
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
@@ -33,19 +38,28 @@ export default function Login({ handleLogin, handleUserData }) {
             password: "",
           });
         }
-        
-        handleUserData(formValue.email) 
-        navigate("/main", { replace: true });
+
+        handleUserData(formValue.email);
+        navigate("/", { replace: true });
         handleLogin(true);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setIsSuccses(false);
+        openToolTip();
+      });
   }
 
   return (
     <div className="sign">
       <div className="sign__container">
         <h2 className="sign__title">Вход</h2>
-        <form onSubmit={handleSubmit}  className="sign__form" method="post" name="login__form">
+        <form
+          onSubmit={handleSubmit}
+          className="sign__form"
+          method="post"
+          name="login__form"
+        >
           <label className="sign__label">
             <input
               className="sign__input"

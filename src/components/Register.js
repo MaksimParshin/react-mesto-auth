@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
 
 export default function Register({ onHandleRegister, valueRegister, setValueRegister }) {
@@ -14,7 +14,7 @@ export default function Register({ onHandleRegister, valueRegister, setValueRegi
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    onHandleRegister(valueRegister.password, valueRegister.email);
+    onHandleRegister();
   }
 
   return (

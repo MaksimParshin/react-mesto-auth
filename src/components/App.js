@@ -8,7 +8,7 @@ import { API } from "../utils/Api";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
 import ProtectedRouteElement from "./ProtectedRoute";
@@ -164,30 +164,28 @@ function App() {
 
   // регистрация
   function handleRegister() {
-    
-      auth
-        .register(valueRegister.password, valueRegister.email)
-        .then((res) => {
-          // console.log(response.status);
-
+    auth
+      .register(valueRegister.password, valueRegister.email)
+      .then((res) => {
+        console.log(res);
+        if (res) {
           setIsSuccses(true);
-          openToolTip()
+          openToolTip();
           navigate("/sign-in", { replace: true });
           setValueRegister({});
-        })
-        .catch((err) => {
-          console.log(err);
-          setIsSuccses(false);
-          openToolTip()
-          
-        });
-  
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsSuccses(false);
+        openToolTip();
+      });
   }
 
   function openToolTip() {
     setIsInfoToolTipPopupOpen(true);
   }
-  // console.log(isSuccses);
+
   // вход
   const handleLogin = (bool) => {
     setLoggedIn(bool);
@@ -210,7 +208,7 @@ function App() {
 
             setLoggedIn(true);
             setUserEmail(userData);
-            navigate("/main", { replace: true });
+            navigate("/", { replace: true });
           }
         })
         .catch((err) => console.log(err));
@@ -232,18 +230,7 @@ function App() {
 
         <Routes>
           <Route
-            path="/"
-            element={
-              loggedIn ? (
-                <Navigate to="/main" replace />
-              ) : (
-                <Navigate to="/sign-in" replace />
-              )
-            }
-          />
-
-          <Route
-            path="/main"
+            index
             element={
               <ProtectedRouteElement
                 element={Main}
@@ -274,6 +261,8 @@ function App() {
               <Login
                 handleLogin={handleLogin}
                 handleUserData={handleUserData}
+                setIsSuccses={setIsSuccses}
+                openToolTip={openToolTip}
               />
             }
           />
