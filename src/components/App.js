@@ -24,12 +24,14 @@ function App() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    API.getUserInfo()
-      .then((data) => {
-        setCurrentUser(data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+    if (loggedIn) {
+      API.getUserInfo()
+        .then((data) => {
+          setCurrentUser(data);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [loggedIn]);
 
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
     React.useState(false);
@@ -54,9 +56,11 @@ function App() {
   function handleRegister(password, email) {
     auth
       .register(password, email)
-      .then((res) => {
+      .then((response) => {
+        // console.log(response.status);
+
         setIsInfoToolTipPopupOpen(true);
-        if (isInfoToolTipPopupOpen !== true) {
+        if (loggedIn) {
           navigate("/sign-in", { replace: true });
         }
       })
@@ -118,12 +122,15 @@ function App() {
   const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
-    API.getInitialCards()
+    if (loggedIn) {
+      API.getInitialCards()
       .then((data) => {
         setCards(data);
       })
       .catch((err) => console.log(err));
-  }, []);
+    }
+    
+  }, [loggedIn]);
 
   React.useEffect(() => {
     handleTokenCheck();
@@ -209,7 +216,11 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header userEmail={userEmail} signOut={handleSignOut} loggedIn={loggedIn}/>
+        <Header
+          userEmail={userEmail}
+          signOut={handleSignOut}
+          loggedIn={loggedIn}
+        />
 
         <Routes>
           <Route
@@ -222,7 +233,6 @@ function App() {
               )
             }
           />
-
 
           <Route
             path="/main"
@@ -240,8 +250,8 @@ function App() {
               />
             }
           />
-          <Route path='/main' element={ <Footer />}/>
-  
+          <Route path="/main" element={<Footer />} />
+
           <Route
             path="/sign-up"
             element={<Register onHandleRegister={handleRegister} />}
@@ -250,10 +260,8 @@ function App() {
             path="/sign-in"
             element={<Login handleLogin={handleLogin} />}
           />
-
-         
         </Routes>
-       
+
         <EditAvatarPopup
           isOpend={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
@@ -284,8 +292,9 @@ function App() {
         />
         <InfoTooltip
           name="info-tool-tip"
+          loggedIn={loggedIn}
           title={
-            isInfoToolTipPopupOpen
+            loggedIn
               ? "Вы успешно зарегистрировались!"
               : "Что-то пошло не так! Попробуйте ещё раз."
           }
