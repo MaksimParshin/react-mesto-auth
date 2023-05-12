@@ -1,23 +1,20 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 
-export default function Register({ onHandleRegister }) {
-  const [formValue, setFormValue] = useState({
-    email: "",
-    password: "",
-  });
+export default function Register({ onHandleRegister, valueRegister, setValueRegister }) {
+ 
 
   function handleChange(evt) {
     const { name, value } = evt.target;
-    setFormValue({
-      ...formValue,
+    setValueRegister({
+      ...valueRegister,
       [name]: value,
     });
   }
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    onHandleRegister(formValue.password, formValue.email);
+    onHandleRegister(valueRegister.password, valueRegister.email);
   }
 
   return (
@@ -37,7 +34,7 @@ export default function Register({ onHandleRegister }) {
               placeholder="E-mail"
               name="email"
               required
-              value={formValue.email}
+              value={valueRegister.email}
               onChange={handleChange}
             />
             <span className="sign__error name-error"></span>
@@ -51,7 +48,7 @@ export default function Register({ onHandleRegister }) {
               required
               minLength="2"
               maxLength="200"
-              value={formValue.password}
+              value={valueRegister.password}
               onChange={handleChange}
             />
             <span className="sign__error about-error"></span>

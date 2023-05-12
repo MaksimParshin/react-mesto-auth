@@ -35,6 +35,11 @@ function App() {
 
   const [isInfoToolTipPopupOpen, setIsInfoToolTipPopupOpen] =
     React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState();
+  const [valueRegister, setValueRegister] = React.useState({
+    email: "",
+    password: "",
+  });
 
   React.useEffect(() => {
     if (loggedIn) {
@@ -165,13 +170,15 @@ function App() {
         // console.log(response.status);
 
         setIsInfoToolTipPopupOpen(true);
-        if (loggedIn) {
-          navigate("/sign-in", { replace: true });
-        }
-      })
-      .catch((err) => console.log(err));
-  }
 
+        navigate("/sign-in", { replace: true });
+        setValueRegister({});
+      })
+      .catch((err) => {
+        return err.then((res) => setErrorMessage(res));
+      });
+  }
+  console.log(errorMessage);
   // вход
   const handleLogin = (bool) => {
     setLoggedIn(bool);
@@ -242,11 +249,15 @@ function App() {
               />
             }
           />
-          <Route path="/main" element={<Footer />} />
-
           <Route
             path="/sign-up"
-            element={<Register onHandleRegister={handleRegister} />}
+            element={
+              <Register
+                onHandleRegister={handleRegister}
+                valueRegister={valueRegister}
+                setValueRegister={setValueRegister}
+              />
+            }
           />
           <Route
             path="/sign-in"
@@ -258,7 +269,7 @@ function App() {
             }
           />
         </Routes>
-
+        {loggedIn && <Footer />}
         <EditAvatarPopup
           isOpend={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
