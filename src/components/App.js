@@ -23,6 +23,11 @@ function App() {
 
   const navigate = useNavigate();
 
+
+function handleUserData(userEmail) {
+  setUserEmail({'email': userEmail})
+}
+
   React.useEffect(() => {
     if (loggedIn) {
       API.getUserInfo()
@@ -134,7 +139,7 @@ function App() {
 
   React.useEffect(() => {
     handleTokenCheck();
-  }, []);
+  }, [loggedIn]);
 
   function handleTokenCheck() {
     const jwt = localStorage.getItem("jwt");
@@ -245,7 +250,7 @@ function App() {
           />
           <Route
             path="/sign-in"
-            element={<Login handleLogin={handleLogin} />}
+            element={<Login handleLogin={handleLogin} handleUserData={handleUserData}/>}
           />
         </Routes>
 

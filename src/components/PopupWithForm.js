@@ -22,7 +22,7 @@ export default function PopupWithForm({
     return () => {
       document.removeEventListener("keydown", closeEsc);
     };
-  }, [isOpend, onClose]);
+  }, [isOpend]);
 
   return (
     <div className={`popup popup_name_${name} ${isOpend ? "popup_opend" : ""}`} onClick={handleCloseOverlay}>
