@@ -46,8 +46,6 @@ function App() {
     }
   }, [loggedIn]);
 
- 
-
   const [isLoading, setIsLoading] = React.useState(false);
 
   function handleEditAvatarClick() {
@@ -106,9 +104,6 @@ function App() {
     }
   }, [loggedIn]);
 
-
-
-
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
@@ -156,8 +151,8 @@ function App() {
     }
   }
 
-   // выход
-   function handleSignOut() {
+  // выход
+  function handleSignOut() {
     localStorage.removeItem("jwt");
     navigate("/sign-in", { replace: true });
   }
@@ -176,12 +171,11 @@ function App() {
       })
       .catch((err) => console.log(err));
   }
-  
-  // вход
-  const handleLogin = () => {
-    setLoggedIn(true);
-  };
 
+  // вход
+  const handleLogin = (bool) => {
+    setLoggedIn(bool);
+  };
 
   React.useEffect(() => {
     handleTokenCheck();
@@ -190,17 +184,20 @@ function App() {
   function handleTokenCheck() {
     const jwt = localStorage.getItem("jwt");
     if (jwt) {
-      auth.getUserMe(jwt).then((res) => {
-        if (res) {
-          const userData = {
-            email: res.data.email,
-          };
+      auth
+        .getUserMe(jwt)
+        .then((res) => {
+          if (res) {
+            const userData = {
+              email: res.data.email,
+            };
 
-          setLoggedIn(true);
-          setUserEmail(userData);
-          navigate("/main", { replace: true });
-        }
-      });
+            setLoggedIn(true);
+            setUserEmail(userData);
+            navigate("/main", { replace: true });
+          }
+        })
+        .catch((err) => console.log(err));
     }
   }
 

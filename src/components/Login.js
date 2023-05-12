@@ -33,9 +33,10 @@ export default function Login({ handleLogin, handleUserData }) {
             password: "",
           });
         }
-        handleLogin();
+        
         handleUserData(formValue.email) 
         navigate("/main", { replace: true });
+        handleLogin(true);
       })
       .catch((err) => console.log(err));
   }
