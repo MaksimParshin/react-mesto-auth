@@ -11,8 +11,8 @@ export default function ImagePopup({ card, onClose, handleCloseOverlay }) {
           aria-label="закрыть попап"
           onClick={onClose}
         ></button>
-        <img className="popup__img" src={card.elem.link !== "" ? card.elem.link : '#'} alt={card.elem.name} ></img>
-        <p className="popup__img-title">{card.elem.name}</p>
+        <img className="popup__img" src={card.link !== "" ? card.link : '#'} alt={card.name !== "" ? card.name : '#'} ></img>
+        <p className="popup__img-title">{card.name}</p>
       </div>
     </div>
   );

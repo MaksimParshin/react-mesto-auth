@@ -8,6 +8,7 @@ import { API } from "../utils/Api";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
+import RecycleBinPopup from "./RecicleBinPopup";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
@@ -28,10 +29,9 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
     React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState({
-    isOpen: false,
-    elem: {},
-  });
+  const [selectedCard, setSelectedCard] = React.useState({});
+  const [isRecycleBinPopupOpen, setIsRecycleBinPopupOpen] =
+  React.useState(false);
 
   const [isInfoToolTipPopupOpen, setIsInfoToolTipPopupOpen] =
     React.useState(false);
@@ -70,11 +70,12 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsInfoToolTipPopupOpen(false);
-    setSelectedCard({ isOpen: false, elem: {} });
+    setIsRecycleBinPopupOpen(false);
+    setSelectedCard({});
   }
 
   function handleCardClick(card) {
-    setSelectedCard({ ...selectedCard, isOpen: true, elem: card });
+    setSelectedCard(card);
   }
 
   function handleUpdateUser(data) {
@@ -132,12 +133,21 @@ function App() {
   }
 
   function handleCardDelete(card) {
-    API.deleteCard(card._id)
-      .then((data) => {
-        setCards((state) => state.filter((c) => c._id !== card._id));
-      })
-      .catch((err) => console.log(err));
+    setIsRecycleBinPopupOpen(true);
+    setSelectedCard(card);
   }
+
+  function handeleRecicleBinClick() {
+    setIsLoading(true);
+    API.deleteCard(selectedCard._id)
+      .then((data) => {
+        setCards((state) => state.filter((c) => c._id !== selectedCard._id));
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoading(false));
+  }
+
 
   function handleAddPlaceSubmit(item) {
     setIsLoading(true);
@@ -288,6 +298,14 @@ function App() {
           onClose={closeAllPopups}
           onAddPlace={handleAddPlaceSubmit}
           isLoading={isLoading}
+          handleCloseOverlay={handleCloseOverlay}
+        />
+            <RecycleBinPopup
+          card={selectedCard}
+          isOpend={isRecycleBinPopupOpen}
+          onClose={closeAllPopups}
+          isLoading={isLoading}
+          onDeletCard={handeleRecicleBinClick}
           handleCloseOverlay={handleCloseOverlay}
         />
 
